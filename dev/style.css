@@ -45,15 +45,15 @@ body{
 .container, .container > article {
   border: 2px solid;
   border-radius: var(--spacing-small);
-  padding: var(--spacing-small)
+  padding: var(--spacing-regular)
 }
 
 #search {
   grid-area: search;
   border: 2px solid;
   border-radius: var(--spacing-small);
-  font-size: var(--font-regular);
-  padding: var(--spacing-small);
+  font-size: var(--font-large);
+  padding: var(--spacing-regular);
 }
 
 #search::-webkit-calendar-picker-indicator {
