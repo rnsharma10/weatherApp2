@@ -12,6 +12,7 @@
   --spacing-regular: 16px;
   --font-small: .5rem;
   --font-regular: 1rem;
+  --font-semiregular: 1.5rem;
   --font-large: 2rem;
   --font-xl: 4rem;
   --font-semibold: 600;
@@ -45,15 +46,15 @@ body{
 .container, .container > article {
   border: 2px solid;
   border-radius: var(--spacing-small);
-  padding: var(--spacing-regular)
+  padding: var(--spacing-medium)
 }
 
 #search {
   grid-area: search;
   border: 2px solid;
   border-radius: var(--spacing-small);
-  font-size: var(--font-large);
-  padding: var(--spacing-regular);
+  font-size: var(--font-semiregular);
+  padding: var(--spacing-medium);
 }
 
 #search::-webkit-calendar-picker-indicator {
