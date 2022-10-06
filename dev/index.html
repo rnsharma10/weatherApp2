@@ -9,64 +9,44 @@
 </head>
 <body>
   <main class="container">
+    <input list="cities" type="search" name="search" id="search" placeholder="Search City...">
+    <datalist id="cities"></datalist>
+
     <article id="current-forecast">
-      <h1 class="city">City Name</h1>
-      <p class="temp">Temp</p>
-      <p class="description">Description</p>
-      <p class="min-max-temp">High low</p>
+      <h1 class="city">--</h1>
+      <p class="temp">--</p>
+      <p class="description">--</p>
+      <p class="min-max-temp">--</p>
     </article>
     <article id="hourly-forecast">
       <h1>Hourly Forecast</h1>
       <section class="hourly-container">
         <article>
           <h3 class="time">Now</h3>
-          <img class="icon">icon
-          <p class="hourly-temp">temp</p>
+          <img class="icon">
+          <p class="hourly-temp">--</p>
         </article>
       </section>
     </article>
     <article id="five-day-forecast">
       <h1>5 day forecast</h1>
       <section class="five-day-container">
-        <article>
+        <article class="day-wise-forecast">
           <h3>Today</h3>
-          <img class="icon">icon
-          <p class="temp-low">L: low</p>
-          <p class="temp-high">H: high</p>
+          <img class="icon">
+          <p class="temp-low">--</p>
+          <p class="temp-high">--</p>
         </article>
-        <article>
-          <h3>Tuesday</h3>
-          <img class="icon">icon
-          <p class="temp-low">L: low</p>
-          <p class="temp-high">H: high</p>
-        </article>
-        <article>
-          <h3>Tuesday</h3>
-          <img class="icon">icon
-          <p class="temp-low">L: low</p>
-          <p class="temp-high">H: high</p>
-        </article>
-        <article>
-          <h3>Tuesday</h3>
-          <img class="icon">icon
-          <p class="temp-low">L: low</p>
-          <p class="temp-high">H: high</p>
-        </article>
-        <article>
-          <h3>Tuesday</h3>
-          <img class="icon">icon
-          <p class="temp-low">L: low</p>
-          <p class="temp-high">H: high</p>
-        </article>
+
       </section>
     </article>
     <article id="feels-like">
       <h1>Feels like</h1>
-      <p class="feels-like-temp">temp</p>
+      <p class="feels-like-temp">--</p>
     </article>
     <article id="humidity">
       <h1>Humidity</h1>
-      <p class="humidity-value">value</p>
+      <p class="humidity-value">--</p>
     </article>
   </main>
   <script src="./script.js"></script>

@@ -1,14 +1,16 @@
 const API_KEY = "481a7c4ab04bc830b729294a0471613e";
 
-const getCurrentWeatherData = async () => {
-  const city = "Pune";
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`;
+let selectedCityText;
+let selectedCity;
+
+const getCurrentWeatherData = async ({ lat, lon, name: city }) => {
+  const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
   const response = await fetch(url);
   return response.json();
 };
 
 const getHourlyForecast = async ({ name: city }) => {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&limit=5&appid=${API_KEY}&units=metric`;
   const response = await fetch(url);
   const data = await response.json();
   return data.list.map((forecast) => {
@@ -40,6 +42,7 @@ const getFiveDayForecast = async (hourlyForecast) => {
       result.set(currentDate, {
         temp_max,
         temp_min,
+        icon,
         day: days[new Date(currentDate).getDay()],
       });
     }
@@ -48,9 +51,27 @@ const getFiveDayForecast = async (hourlyForecast) => {
   return Array.from(result.values());
 };
 
+const getCitiesUsingGeolocation = async function (searchText) {
+  const url = `https://api.openweathermap.org/geo/1.0/direct?q=${searchText}&limit=5&appid=${API_KEY}`;
+  const response = await fetch(url);
+  return response.json();
+};
+
 const formatTemperature = (temp) => `${temp?.toFixed(1)}°`;
 const createIconUrl = (icon) =>
   `http://openweathermap.org/img/wn/${icon}@2x.png`;
+
+const loadForecastUsingGeolocation = () => {
+  navigator.geolocation.getCurrentPosition(
+    ({ coords }) => {
+      console.log(coords);
+      const { latitude: lat, longitude: lon } = coords;
+      selectedCity = { lat, lon };
+      loadData();
+    },
+    (error) => console.log(error)
+  );
+};
 
 const loadCurrentForecast = ({
   name,
@@ -73,12 +94,16 @@ const loadCurrentForecast = ({
 
 const loadHourlyForecast = (hourlyForecast) => {
   console.log(hourlyForecast);
-  let dataFor12Hours = hourlyForecast.slice(1, 13);
+  const timeFormatter = Intl.DateTimeFormat("en", {
+    hour12: true,
+    hour: "numeric",
+  });
+  let dataFor12Hours = hourlyForecast.slice(2, 14);
   const hourlyContainer = document.querySelector(".hourly-container");
   let innerHTMLString = ``;
   for (let { temp, icon, dt_txt } of dataFor12Hours) {
     innerHTMLString += `<article>
-        <h3 class="time">${dt_txt.split(" ")[1].substring(0, 5)}</h3>
+        <h3 class="time">${timeFormatter.format(new Date(dt_txt))}</h3>
         <img class="icon" src="${createIconUrl(icon)}">
         <p class="hourly-temp">${formatTemperature(temp)}</p>
       </article>`;
@@ -90,12 +115,12 @@ const loadFiveDayForecast = (fiveDayForecast) => {
   console.log(fiveDayForecast);
   const fiveDayContainer = document.querySelector(".five-day-container");
   let innerHTMLString = ``;
-  for (let { temp_min, temp_max, day } of fiveDayForecast) {
-    innerHTMLString += `<article>
+  for (let { temp_min, temp_max, day, icon } of fiveDayForecast.slice(0, -1)) {
+    innerHTMLString += `<article class="day-wise-forecast">
         <h3>${day}</h3>
-        <img class="icon">icon
-        <p class="temp-low">L: ${formatTemperature(temp_min)}</p>
-        <p class="temp-high">H: ${formatTemperature(temp_max)}</p>
+        <img class="icon" src="${createIconUrl(icon)}">
+        <p class="temp-low">${formatTemperature(temp_min)}</p>
+        <p class="temp-high">${formatTemperature(temp_max)}</p>
       </article>`;
   }
   fiveDayContainer.innerHTML = innerHTMLString;
@@ -108,12 +133,74 @@ const loadFeelsLikeAndHumidity = ({ main: { feels_like, humidity } }) => {
   humidityValueElement.textContent = humidity;
 };
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const currentWeather = await getCurrentWeatherData();
+function debounce(func) {
+  let timer;
+  return (...args) => {
+    console.log(`timer ${timer}`);
+    clearTimeout(timer); // clear existing timer
+    timer = setTimeout(() => {
+      console.log(`timer ${timer}`);
+
+      console.log(`args ${JSON.stringify(args)}`);
+      func.apply(this, args);
+    }, 500);
+  };
+}
+
+const onSearchChange = async (event) => {
+  console.log(`event ${JSON.stringify(event)}`);
+  let { value } = event.target;
+
+  if (!value) {
+    selectedCity = null;
+    selectedCityText = "";
+  }
+
+  if (value && selectedCityText != value) {
+    const listOfCities = await getCitiesUsingGeolocation(value);
+    let options = ``;
+    for (let { name, state, country, lat, lon } of listOfCities) {
+      options += `
+      <option data-city-details='${JSON.stringify({
+        lat,
+        lon,
+        name,
+      })}' value="${name}, ${state}, ${country}">
+      `;
+    }
+
+    document.querySelector("#cities").innerHTML = options;
+  }
+};
+
+const debouncedSearch = debounce((event) => onSearchChange(event));
+
+const handleCitySelection = (event) => {
+  selectedCityText = event.target.value;
+
+  let options = document.querySelectorAll("#cities > option");
+  if (options?.length) {
+    let selectedOption = Array.from(options).find(
+      (opt) => opt.value === selectedCityText
+    );
+    selectedCity = JSON.parse(selectedOption.getAttribute("data-city-details"));
+    loadData();
+  }
+};
+
+const loadData = async () => {
+  const currentWeather = await getCurrentWeatherData(selectedCity);
   const hourlyForecast = await getHourlyForecast(currentWeather);
   const fiveDayForecast = await getFiveDayForecast(hourlyForecast);
   loadCurrentForecast(currentWeather);
   loadHourlyForecast(hourlyForecast);
   loadFiveDayForecast(fiveDayForecast);
   loadFeelsLikeAndHumidity(currentWeather);
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  loadForecastUsingGeolocation();
+  const searchInput = document.querySelector("#search");
+  searchInput.addEventListener("input", debouncedSearch);
+  searchInput.addEventListener("change", handleCitySelection);
 });
