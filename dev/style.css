@@ -46,7 +46,8 @@ body{
 .container, .container > article {
   border: 2px solid;
   border-radius: var(--spacing-small);
-  padding: var(--spacing-medium)
+  margin: var(--spacing-medium);
+  padding: var(--spacing-medium);
 }
 
 #search {
@@ -55,6 +56,8 @@ body{
   border-radius: var(--spacing-small);
   font-size: var(--font-semiregular);
   padding: var(--spacing-medium);
+  margin: var(--spacing-medium);
+
 }
 
 #search::-webkit-calendar-picker-indicator {
@@ -163,6 +166,9 @@ body{
 }
 
 
+#feels-like, #humidity {
+  font-weight: var(--font-semibold);
+}
 
 #feels-like {
   grid-area: feelslike;

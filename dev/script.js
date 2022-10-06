@@ -29,7 +29,6 @@ const getFiveDayForecast = async (hourlyForecast) => {
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const result = new Map();
   for (const { temp_min, temp_max, dt_txt, icon } of hourlyForecast) {
-    console.log("run");
     let currentDate = dt_txt.split(" ")[0];
     if (result.get(currentDate)) {
       const tempForecast = result.get(currentDate);
