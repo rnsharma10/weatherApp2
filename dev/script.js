@@ -76,7 +76,7 @@ const loadForecastUsingGeolocation = () => {
 const loadCurrentForecast = ({
   name,
   main: { temp, temp_max, temp_min },
-  weather: [{ description }],
+  weather: [{ description, icon }],
 }) => {
   const currentForecastElement = document.querySelector("#current-forecast");
   currentForecastElement.querySelector(".city").textContent = name;
@@ -87,6 +87,9 @@ const loadCurrentForecast = ({
   ).textContent = `H: ${formatTemperature(temp_max)} L: ${formatTemperature(
     temp_min
   )}`;
+  currentForecastElement
+    .querySelector(".icon")
+    .setAttribute("src", createIconUrl(icon));
 
   currentForecastElement.querySelector(".description").textContent =
     description;

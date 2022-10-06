@@ -39,7 +39,7 @@ body{
     "fiveday fiveday"
     "feelslike humidity";
   gap: var(--spacing-small);
-  margin: var(--spacing-regular);
+  margin: var(--spacing-small);
 }
 
 
@@ -75,6 +75,12 @@ body{
   margin: var(--spacing-regular);
 }
 
+#current-forecast .icon{
+  width: 150px;
+  height: 150px;
+  margin: 0 auto;
+}
+
 #current-forecast .description{
   text-transform: capitalize;
 }
@@ -84,6 +90,9 @@ body{
   font-size: var(--font-regular);
   font-weight: var(--font-semibold);
 }
+
+
+
 
 
 
@@ -175,4 +184,41 @@ body{
       "hourly hourly fiveday fiveday"
       "feelslike humidity fiveday fiveday";
   }
+
+  #current-forecast{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 
+    "currentLocationCity currentWeatherIcon"
+    "currentLocationTemp currentWeatherIcon"
+    "currentLocationTempMinMax currentWeatherDesc";
+  }
+  
+  #current-forecast .city{
+    grid-area: currentLocationCity;
+  }
+  
+  #current-forecast .temp{
+    grid-area: currentLocationTemp;
+  }
+  
+  
+  #current-forecast .icon{
+    grid-area: currentWeatherIcon;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+  }
+  
+  
+  
+  #current-forecast .description{
+    grid-area: currentWeatherDesc;
+  }
+  
+  #current-forecast .min-max-temp{
+    grid-area: currentLocationTempMinMax;
+  
+  }
+
 }
