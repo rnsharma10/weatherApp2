@@ -9,8 +9,11 @@
 </head>
 <body>
   <main class="container">
-    <input list="cities" type="search" name="search" id="search" placeholder="Search City...">
-    <datalist id="cities"></datalist>
+    <div class="searchBar">
+      <input list="cities" type="search" name="search" id="search" placeholder="Search City...">
+      <span class="focus-border"></span>
+      <datalist id="cities"></datalist>
+    </div>
 
     <article id="current-forecast">
       <h1 class="city">--</h1>

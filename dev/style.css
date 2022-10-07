@@ -6,25 +6,47 @@
   padding: 5px; */
 }
 
-:root{
+:root {
   --spacing-small: 4px;
   --spacing-medium: 8px;
   --spacing-regular: 16px;
-  --font-small: .5rem;
+  --font-small: 0.5rem;
   --font-regular: 1rem;
   --font-semiregular: 1.5rem;
   --font-large: 2rem;
   --font-xl: 4rem;
   --font-semibold: 600;
-
+  --color-grey : #e2e2e2;
 }
 
+:focus{outline: none;}
 
-body{
+html {
+  scroll-behavior: smooth;
+}
+
+body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   max-width: 800px;
   margin: var(--spacing-regular) auto;
+  /* background-color: aquamarine; */
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  /* background-color: rgba(100, 100, 100, .5); */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-grey);
+  border: 3px solid transparent;
+  border-radius: 9px;
+  background-clip: content-box;
 }
 
 /* mobile layout approach*/
@@ -32,8 +54,9 @@ body{
 .container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-areas: 
+  grid-template-areas:
     "search search"
+    "underlinedInput underlinedInput"
     "current current"
     "hourly hourly"
     "fiveday fiveday"
@@ -42,49 +65,71 @@ body{
   margin: var(--spacing-small);
 }
 
-
-.container, .container > article {
-  border: 2px solid;
+.container,
+.container > article {
   border-radius: var(--spacing-small);
   margin: var(--spacing-small);
   padding: var(--spacing-medium);
 }
 
-#search {
-  grid-area: search;
-  border: 2px solid;
-  border-radius: var(--spacing-small);
-  font-size: var(--font-semiregular);
-  padding: var(--spacing-medium);
-  margin: var(--spacing-small);
 
+.searchBar{
+  grid-area: search;
+  position: relative;
+  max-width: 100%;
+  margin: var(--spacing-small);
+}
+
+#search {
+  width: 100%;
+  font-size: var(--font-semiregular);
+  grid-area: underlinedInput;
+  border: 0; 
+  padding: 7px 0; 
+  border-bottom: 1px solid #ccc;
+  border-radius: var(--spacing-small) var(--spacing-small) 0 0 ;
+}
+
+
+
+#search ~ .focus-border {
+  position: absolute; 
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #4caf50;
+  transition: 0.3s;
+}
+#search:focus ~ .focus-border {
+  width: 100%;
+  transition: 0.3s;
 }
 
 #search::-webkit-calendar-picker-indicator {
   display: none !important;
 }
 
-
-
 /* style related to current weather */
 
-#current-forecast{
+#current-forecast {
   grid-area: current;
   text-align: center;
+  box-shadow: 1px 1px 5px 1px rgba(74, 74, 74, 0.71);
 }
 
-#current-forecast .temp{
+#current-forecast .temp {
   font-size: var(--font-xl);
   margin: var(--spacing-regular);
 }
 
-#current-forecast .icon{
+#current-forecast .icon {
   width: 150px;
   height: 150px;
   margin: 0 auto;
 }
 
-#current-forecast .description{
+#current-forecast .description {
   text-transform: capitalize;
 }
 
@@ -94,36 +139,31 @@ body{
   font-weight: var(--font-semibold);
 }
 
-
-
-
-
-
 /* styles related to hourly forecast */
 #hourly-forecast {
   grid-area: hourly;
   text-align: center;
+  box-shadow: 1px 1px 5px 1px rgba(74, 74, 74, 0.71);
 }
 
-#hourly-forecast .hourly-container{
+#hourly-forecast .hourly-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   grid-auto-flow: column;
   grid-auto-columns: minmax(100px, 1fr);
   overflow-x: auto;
-  gap: var(--spacing-medium)
+  gap: var(--spacing-medium);
 }
 
-#hourly-forecast .hourly-container .time{
-  
+#hourly-forecast .hourly-container .time {
 }
 
-#hourly-forecast .hourly-container .icon{
+#hourly-forecast .hourly-container .icon {
   height: 100px;
   width: 100px;
   object-fit: contain;
 }
-#hourly-forecast .hourly-container .hourly-temp{
+#hourly-forecast .hourly-container .hourly-temp {
   font-size: var(--font-regular);
   font-weight: var(--font-semibold);
 }
@@ -131,14 +171,12 @@ body{
 #five-day-forecast {
   grid-area: fiveday;
   text-align: center;
+  box-shadow: 1px 1px 5px 1px rgba(74, 74, 74, 0.71);
 }
 
-
-
-#five-day-forecast .five-day-container{
+#five-day-forecast .five-day-container {
   display: grid;
   grid-auto-flow: row;
-  
 }
 
 .five-day-container .day-wise-forecast {
@@ -149,25 +187,24 @@ body{
 }
 
 .five-day-container .day-wise-forecast .temp-low,
-.five-day-container .day-wise-forecast .temp-high{
+.five-day-container .day-wise-forecast .temp-high {
   font-size: var(--font-regular);
   font-weight: var(--font-semibold);
 }
 
-.five-day-container .day-wise-forecast .temp-low{
+.five-day-container .day-wise-forecast .temp-low {
   opacity: 60%;
 }
 
-.five-day-container .day-wise-forecast .icon{
+.five-day-container .day-wise-forecast .icon {
   width: 75px;
   height: 75px;
-  
-
 }
 
-
-#feels-like, #humidity {
+#feels-like,
+#humidity {
   font-weight: var(--font-semibold);
+  box-shadow: 1px 1px 5px 1px rgba(74, 74, 74, 0.71);
 }
 
 #feels-like {
@@ -180,51 +217,47 @@ body{
   text-align: center;
 }
 
-
-@media (width >= 650px){
+@media (width >= 650px) {
   .container {
     grid-template-columns: repeat(4, 1fr);
-    grid-template-areas: 
+    grid-template-areas:
       "search search search search"
+      "underlinedInput underlinedInput underlinedInput underlinedInput"
       "current current current current"
       "hourly hourly fiveday fiveday"
       "feelslike humidity fiveday fiveday";
+    
   }
 
-  #current-forecast{
+  #current-forecast {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-areas: 
-    "currentLocationCity currentWeatherIcon"
-    "currentLocationTemp currentWeatherIcon"
-    "currentLocationTempMinMax currentWeatherDesc";
+    grid-template-areas:
+      "currentLocationCity currentWeatherIcon"
+      "currentLocationTemp currentWeatherIcon"
+      "currentLocationTempMinMax currentWeatherDesc";
   }
-  
-  #current-forecast .city{
+
+  #current-forecast .city {
     grid-area: currentLocationCity;
   }
-  
-  #current-forecast .temp{
+
+  #current-forecast .temp {
     grid-area: currentLocationTemp;
   }
-  
-  
-  #current-forecast .icon{
+
+  #current-forecast .icon {
     grid-area: currentWeatherIcon;
     width: 200px;
     height: 200px;
     margin: 0 auto;
   }
-  
-  
-  
-  #current-forecast .description{
+
+  #current-forecast .description {
     grid-area: currentWeatherDesc;
   }
-  
-  #current-forecast .min-max-temp{
-    grid-area: currentLocationTempMinMax;
-  
-  }
 
+  #current-forecast .min-max-temp {
+    grid-area: currentLocationTempMinMax;
+  }
 }

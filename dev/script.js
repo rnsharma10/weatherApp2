@@ -111,6 +111,14 @@ const loadHourlyForecast = (hourlyForecast) => {
       </article>`;
   }
   hourlyContainer.innerHTML = innerHTMLString;
+  hourlyContainer.children[8].scrollIntoView();
+  // console.log(hourlyContainer.children[8].offsetTop);
+  setTimeout(() => {
+    hourlyContainer.children[0].scrollIntoView({
+      block: "nearest",
+      behavior: "smooth",
+    });
+  }, 500);
 };
 
 const loadFiveDayForecast = (fiveDayForecast) => {
