@@ -1,3 +1,5 @@
+import { main } from "./colorExtract.js";
+
 const API_KEY = "481a7c4ab04bc830b729294a0471613e";
 
 let selectedCityText;
@@ -92,6 +94,17 @@ const loadCurrentForecast = ({
 
   currentForecastElement.querySelector(".description").textContent =
     description;
+
+  const tempImageTag = new Image();
+  onImageLoadListener(tempImageTag);
+  const backgroundImageUrl = `../appImages/${icon}.jpg`;
+  tempImageTag.src = backgroundImageUrl;
+  document.querySelector(
+    ".container"
+  ).style.backgroundImage = `url(${backgroundImageUrl})`;
+  // document.querySelector(
+  //   "#background"
+  // ).style.backgroundImage = `url(${backgroundImageUrl})`;
 };
 
 const loadHourlyForecast = (hourlyForecast) => {
@@ -111,14 +124,6 @@ const loadHourlyForecast = (hourlyForecast) => {
       </article>`;
   }
   hourlyContainer.innerHTML = innerHTMLString;
-  hourlyContainer.children[8].scrollIntoView();
-  // console.log(hourlyContainer.children[8].offsetTop);
-  setTimeout(() => {
-    hourlyContainer.children[0].scrollIntoView({
-      block: "nearest",
-      behavior: "smooth",
-    });
-  }, 500);
 };
 
 const loadFiveDayForecast = (fiveDayForecast) => {
@@ -214,3 +219,65 @@ document.addEventListener("DOMContentLoaded", async () => {
   searchInput.addEventListener("input", debouncedSearch);
   searchInput.addEventListener("change", handleCitySelection);
 });
+
+// image load event listner
+function onImageLoadListener(img) {
+  img.onload = function (e) {
+    var rgb = getAverageRGB(img);
+    let rgbText = "rgb(" + rgb.r + "," + rgb.g + "," + rgb.b + ")";
+    document.body.style.backgroundColor = rgbText;
+    // document.querySelector("#rgb").innerText = rgbText;
+  };
+}
+
+// majority image color
+function getAverageRGB(imgEl) {
+  var blockSize = 5, // only visit every 5 pixels
+    defaultRGB = {
+      r: 0,
+      g: 0,
+      b: 0,
+    }, // for non-supporting envs
+    canvas = document.createElement("canvas"),
+    context = canvas.getContext && canvas.getContext("2d"),
+    data,
+    width,
+    height,
+    i = -4,
+    length,
+    rgb = {
+      r: 0,
+      g: 0,
+      b: 0,
+    },
+    count = 0;
+
+  if (!context) {
+    return defaultRGB;
+  }
+  height = canvas.height =
+    imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
+  width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
+  context.drawImage(imgEl, 0, 0);
+
+  try {
+    data = context.getImageData(0, 0, width, height);
+  } catch (e) {
+    /* security error, img on diff domain */
+    alert("x");
+    return defaultRGB;
+  }
+  length = data.data.length;
+  while ((i += blockSize * 4) < length) {
+    ++count;
+    rgb.r += data.data[i];
+    rgb.g += data.data[i + 1];
+    rgb.b += data.data[i + 2];
+  }
+  // ~~ used to floor values
+  rgb.r = ~~(rgb.r / count);
+  rgb.g = ~~(rgb.g / count);
+  rgb.b = ~~(rgb.b / count);
+  console.log(rgb);
+  return rgb;
+}
