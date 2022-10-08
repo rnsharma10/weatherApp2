@@ -2,17 +2,20 @@ import { addCacheItem, getCachedItem, isCached } from "./locationCaching.js";
 
 const API_KEY = "481a7c4ab04bc830b729294a0471613e";
 
+// NAME OF CITY
 let selectedCityText;
+// CITY OBJECT CONTAINER LATITUDE AND LONGITUDE
 let selectedCity;
 let backgroundImageUrl = "";
-let changedTooFast = false;
 
+// GET CURRENT WEATHER OF CITY BY LATITUDE AND LONGITUDE
 const getCurrentWeatherData = async ({ lat, lon, name: city }) => {
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
   const response = await fetch(url);
   return response.json();
 };
 
+// GET HOURLY WEATHER OF CITY
 const getHourlyForecast = async ({ coord: { lon, lat } }) => {
   const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
   const response = await fetch(url);
@@ -29,9 +32,13 @@ const getHourlyForecast = async ({ coord: { lon, lat } }) => {
   });
 };
 
+// GET FIVE DAY FORECAST BY MAPPING AND COMBINING ENTRIES FROM HOURLY FORECAST OF CITY
 const getFiveDayForecast = async (hourlyForecast) => {
   const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const result = new Map();
+
+  // LOOP THROUGH EACH 3 HOUR FORECAST AND CHECK FOR MAX TEMP AND MIN TEMP
+  // AND ALSO TAKE THE FIRST ICON YOU GET
   for (const { temp_min, temp_max, dt_txt, icon } of hourlyForecast) {
     let currentDate = dt_txt.split(" ")[0];
     if (result.get(currentDate)) {
@@ -53,16 +60,21 @@ const getFiveDayForecast = async (hourlyForecast) => {
   return Array.from(result.values());
 };
 
+// GET CITY SUGGESTION NAME BY THE TEXT GIVEN
 const getCitiesUsingGeolocation = async function (searchText) {
   const url = `https://api.openweathermap.org/geo/1.0/direct?q=${searchText}&limit=5&appid=${API_KEY}`;
   const response = await fetch(url);
   return response.json();
 };
 
+// FORMAT TEMPERATURE TO 1 DECIMAL
 const formatTemperature = (temp) => `${temp?.toFixed(1)}°`;
+
+// CREATE ICON URL
 const createIconUrl = (icon) =>
   `http://openweathermap.org/img/wn/${icon}@2x.png`;
 
+// USE CURRENT LOCATION OF DEVICE AND SHOW WEATHER DATA ELSE SHOW ERROR
 const loadForecastUsingGeolocation = () => {
   navigator.geolocation.getCurrentPosition(
     ({ coords }) => {
@@ -250,17 +262,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   const searchInput = document.querySelector("#search");
   searchInput.addEventListener("input", debouncedSearch);
   searchInput.addEventListener("change", handleCitySelection);
+  setInterval(() => {
+    localStorage.clear();
+  }, 300000);
 });
 
 // image load event listner
 function onImageLoadListener(img) {
   img.onload = function (e) {
-    var rgb = getAverageRGB(img);
+    const rgb = getAverageRGB(img);
     let rgbText = "rgb(" + rgb.r + "," + rgb.g + "," + rgb.b + ")";
-    document.body.style.backgroundColor = rgbText;
+    const darkRgbText = `rgb(${rgb.r - 20},${rgb.g - 20}, ${rgb.b - 20})`;
+    document.body.style.background = `${rgbText}`;
+    document.querySelector(".header").style.backgroundColor = darkRgbText;
     document.querySelector(
       ".container"
     ).style.backgroundImage = `url(${backgroundImageUrl})`;
+
     // document.querySelector("#rgb").innerText = rgbText;
   };
 }
