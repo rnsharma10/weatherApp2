@@ -100,11 +100,11 @@ const loadCurrentForecast = ({
   currentForecastElement.querySelector(".city").textContent = name;
   currentForecastElement.querySelector(".temp").textContent =
     formatTemperature(temp);
-  currentForecastElement.querySelector(
-    ".min-max-temp"
-  ).textContent = `H: ${formatTemperature(temp_max)} L: ${formatTemperature(
-    temp_min
-  )}`;
+  currentForecastElement.querySelector(".min-max-temp").innerHTML = `
+          <span class="current-min-temp">${formatTemperature(
+            temp_min
+          )}</span>&nbsp;&nbsp;
+          <span class="current-max-temp">${formatTemperature(temp_max)}</span>`;
   currentForecastElement
     .querySelector(".icon")
     .setAttribute("src", createIconUrl(icon));
@@ -133,11 +133,14 @@ const loadHourlyForecast = (hourlyForecast) => {
   const hourlyContainer = document.querySelector(".hourly-container");
   let innerHTMLString = ``;
   for (let { temp, icon, dt_txt } of dataFor12Hours) {
-    innerHTMLString += `<article>
+    innerHTMLString += `<article class="h-block">
+      <div>
         <h3 class="time">${timeFormatter.format(new Date(dt_txt))}</h3>
         <img class="icon" src="${createIconUrl(icon)}">
         <p class="hourly-temp">${formatTemperature(temp)}</p>
-      </article>`;
+      </div>
+      </article>
+      `;
   }
   hourlyContainer.innerHTML = innerHTMLString;
 };
@@ -146,13 +149,15 @@ const loadFiveDayForecast = (fiveDayForecast) => {
   // console.log(fiveDayForecast);
   const fiveDayContainer = document.querySelector(".five-day-container");
   let innerHTMLString = ``;
-  for (let { temp_min, temp_max, day, icon } of fiveDayForecast.slice(0, -1)) {
+  for (let { temp_min, temp_max, day, icon } of fiveDayForecast) {
     innerHTMLString += `<article class="day-wise-forecast">
         <h3>${day}</h3>
         <img class="icon" src="${createIconUrl(icon)}">
         <p class="temp-low">${formatTemperature(temp_min)}</p>
         <p class="temp-high">${formatTemperature(temp_max)}</p>
-      </article>`;
+      </article>
+      <div class="h-divider"></div>
+      `;
   }
   fiveDayContainer.innerHTML = innerHTMLString;
 };

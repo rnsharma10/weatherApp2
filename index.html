@@ -32,23 +32,32 @@
       </article>
       <article id="current-forecast" class="opacity-20">
         <h1 class="city">--</h1>
+        <div class="h-divider"></div>
         <p class="temp">--</p>
         <img class="icon">
         <p class="description">--</p>
-        <p class="min-max-temp">--</p>
+        <p class="min-max-temp">
+          <span class="current-min-temp">--</span>
+          <span class="current-max-temp">--</span>
+        </p>
       </article>
       <article id="hourly-forecast" class="opacity-20">
         <h1>Hourly Forecast</h1>
+        <div class="h-divider"></div>
         <section class="hourly-container">
-          <article>
-            <h3 class="time">Now</h3>
-            <img class="icon">
-            <p class="hourly-temp">--</p>
+          <article class="h-block">
+            <div>
+              <h3 class="time">Now</h3>
+              <img class="icon">
+              <p class="hourly-temp">--</p>
+            </div>
+            <!-- <div class="divider"></div> -->
           </article>
         </section>
       </article>
       <article id="five-day-forecast" class="opacity-20">
         <h1>5 day forecast</h1>
+        <div class="h-divider"></div>
         <section class="five-day-container">
           <article class="day-wise-forecast">
             <h3>Today</h3>
@@ -61,10 +70,12 @@
       </article>
       <article id="feels-like" class="opacity-20">
         <h1>Feels like</h1>
+        <div class="h-divider"></div>
         <p class="feels-like-temp">--</p>
       </article>
       <article id="humidity" class="opacity-20">
         <h1>Humidity</h1>
+        <div class="h-divider"></div>
         <p class="humidity-value">--</p>
       </article>
       <canvas id="canvas"></canvas>
