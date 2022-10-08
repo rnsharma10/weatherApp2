@@ -2,6 +2,7 @@ const API_KEY = "481a7c4ab04bc830b729294a0471613e";
 
 let selectedCityText;
 let selectedCity;
+let backgroundImageUrl = "";
 
 const getCurrentWeatherData = async ({ lat, lon, name: city }) => {
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
@@ -93,11 +94,9 @@ const loadCurrentForecast = ({
 
   const tempImageTag = new Image();
   onImageLoadListener(tempImageTag);
-  const backgroundImageUrl = `./appImages/${icon}.jpg`;
+  backgroundImageUrl = `./appImages/${icon}.jpg`;
   tempImageTag.src = backgroundImageUrl;
-  document.querySelector(
-    ".container"
-  ).style.backgroundImage = `url(${backgroundImageUrl})`;
+
   // document.querySelector(
   //   "#background"
   // ).style.backgroundImage = `url(${backgroundImageUrl})`;
@@ -225,6 +224,9 @@ function onImageLoadListener(img) {
     var rgb = getAverageRGB(img);
     let rgbText = "rgb(" + rgb.r + "," + rgb.g + "," + rgb.b + ")";
     document.body.style.backgroundColor = rgbText;
+    document.querySelector(
+      ".container"
+    ).style.backgroundImage = `url(${backgroundImageUrl})`;
     // document.querySelector("#rgb").innerText = rgbText;
   };
 }
