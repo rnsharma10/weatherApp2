@@ -48,7 +48,6 @@ const getFiveDayForecast = async (hourlyForecast) => {
       });
     }
   }
-  console.log(result);
   return Array.from(result.values());
 };
 
@@ -65,7 +64,6 @@ const createIconUrl = (icon) =>
 const loadForecastUsingGeolocation = () => {
   navigator.geolocation.getCurrentPosition(
     ({ coords }) => {
-      console.log(coords);
       const { latitude: lat, longitude: lon } = coords;
       selectedCity = { lat, lon };
       loadData();
@@ -108,7 +106,7 @@ const loadCurrentForecast = ({
 };
 
 const loadHourlyForecast = (hourlyForecast) => {
-  console.log(hourlyForecast);
+  // console.log(hourlyForecast);
   const timeFormatter = Intl.DateTimeFormat("en", {
     hour12: true,
     hour: "numeric",
@@ -127,7 +125,7 @@ const loadHourlyForecast = (hourlyForecast) => {
 };
 
 const loadFiveDayForecast = (fiveDayForecast) => {
-  console.log(fiveDayForecast);
+  // console.log(fiveDayForecast);
   const fiveDayContainer = document.querySelector(".five-day-container");
   let innerHTMLString = ``;
   for (let { temp_min, temp_max, day, icon } of fiveDayForecast.slice(0, -1)) {
@@ -151,37 +149,40 @@ const loadFeelsLikeAndHumidity = ({ main: { feels_like, humidity } }) => {
 function debounce(func) {
   let timer;
   return (...args) => {
-    console.log(`timer ${timer}`);
     clearTimeout(timer); // clear existing timer
     timer = setTimeout(() => {
-      console.log(`timer ${timer}`);
-
-      console.log(`args ${JSON.stringify(args)}`);
       func.apply(this, args);
     }, 500);
   };
 }
 
 const onSearchChange = async (event) => {
-  console.log(`event ${JSON.stringify(event)}`);
   let { value } = event.target;
 
   if (!value) {
     selectedCity = null;
     selectedCityText = "";
+    document.querySelector(".focus-border").style.backgroundColor = "white";
   }
 
   if (value && selectedCityText != value) {
     const listOfCities = await getCitiesUsingGeolocation(value);
+
     let options = ``;
-    for (let { name, state, country, lat, lon } of listOfCities) {
-      options += `
-      <option data-city-details='${JSON.stringify({
-        lat,
-        lon,
-        name,
-      })}' value="${name}, ${state}, ${country}">
-      `;
+
+    if (!listOfCities.length) {
+      document.querySelector(".focus-border").style.backgroundColor = "red";
+    } else {
+      document.querySelector(".focus-border").style.backgroundColor = "white";
+      for (let { name, state, country, lat, lon } of listOfCities) {
+        options += `
+        <option data-city-details='${JSON.stringify({
+          lat,
+          lon,
+          name,
+        })}' value="${name}, ${state}, ${country}">
+        `;
+      }
     }
 
     document.querySelector("#cities").innerHTML = options;
@@ -278,6 +279,6 @@ function getAverageRGB(imgEl) {
   rgb.r = ~~(rgb.r / count);
   rgb.g = ~~(rgb.g / count);
   rgb.b = ~~(rgb.b / count);
-  console.log(rgb);
+  // console.log(rgb);
   return rgb;
 }

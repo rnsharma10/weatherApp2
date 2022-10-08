@@ -68,6 +68,7 @@ body {
 #canvas{
   display: none;
 }
+
 .container {
   margin: 0;
   display: grid;
