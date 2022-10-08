@@ -72,7 +72,7 @@ body {
 
 .header{
   padding: var(--spacing-small);
-  font-size: var(--font-semiregular);
+  font-size: var(--font-large);
   font-weight: var(--font-semibold);
   text-align: center;
   background-color: #142a4d;
