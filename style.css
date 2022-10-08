@@ -45,6 +45,14 @@ body {
   color: var(--font-color);
 }
 
+.opacity-20{
+  background-color: rgba(0,0,0,.2);
+}
+
+.opacity-20-white{
+  background-color: rgba(0255,255,255,.2);
+}
+
 .mainContainer{
   max-width: 800px;
   margin: 0 auto;
@@ -119,7 +127,7 @@ body {
   appearance: none;
   height: var(--font-regular);
   width: var(--font-regular);
-  background-image: url("../appImages/clear.svg");
+  background-image: url("./appImages/clear.svg");
   background-size: var(--font-regular);
   filter:grayscale(0)
   

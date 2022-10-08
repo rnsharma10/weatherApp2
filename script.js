@@ -1,5 +1,3 @@
-import { main } from "./colorExtract.js";
-
 const API_KEY = "481a7c4ab04bc830b729294a0471613e";
 
 let selectedCityText;
@@ -95,7 +93,7 @@ const loadCurrentForecast = ({
 
   const tempImageTag = new Image();
   onImageLoadListener(tempImageTag);
-  const backgroundImageUrl = `../appImages/${icon}.jpg`;
+  const backgroundImageUrl = `./appImages/${icon}.jpg`;
   tempImageTag.src = backgroundImageUrl;
   document.querySelector(
     ".container"

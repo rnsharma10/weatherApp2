@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WeatherApp</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="">
+  <div class="mainContainer">
+    <div id="background"></div>
+  
+    <main class="container">
+      <div class="searchBar opacity-20">
+        <input list="cities" type="search" name="search" id="search" placeholder="Search City...">
+        <span class="focus-border"></span>
+        <datalist id="cities"></datalist>
+      </div>
+  
+      <article id="current-forecast" class="opacity-20">
+        <h1 class="city">--</h1>
+        <p class="temp">--</p>
+        <img class="icon">
+        <p class="description">--</p>
+        <p class="min-max-temp">--</p>
+      </article>
+      <article id="hourly-forecast" class="opacity-20">
+        <h1>Hourly Forecast</h1>
+        <section class="hourly-container">
+          <article>
+            <h3 class="time">Now</h3>
+            <img class="icon">
+            <p class="hourly-temp">--</p>
+          </article>
+        </section>
+      </article>
+      <article id="five-day-forecast" class="opacity-20">
+        <h1>5 day forecast</h1>
+        <section class="five-day-container">
+          <article class="day-wise-forecast">
+            <h3>Today</h3>
+            <img class="icon">
+            <p class="temp-low">--</p>
+            <p class="temp-high">--</p>
+          </article>
+  
+        </section>
+      </article>
+      <article id="feels-like" class="opacity-20">
+        <h1>Feels like</h1>
+        <p class="feels-like-temp">--</p>
+      </article>
+      <article id="humidity" class="opacity-20">
+        <h1>Humidity</h1>
+        <p class="humidity-value">--</p>
+      </article>
+      <canvas id="canvas"></canvas>
+    </main>
+    
+  </div>
+  <script src="./script.js" defer type='module'></script>
+</body>
+</html>
