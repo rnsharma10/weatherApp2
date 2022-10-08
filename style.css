@@ -76,6 +76,8 @@ body {
   font-weight: var(--font-semibold);
   text-align: center;
   background-color: #142a4d;
+  transition: background .5s ease;
+
 }
 
 #background {
