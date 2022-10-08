@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,17 +8,24 @@
   <title>WeatherApp</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="">
   <div class="mainContainer">
     <div id="background"></div>
-  
+
     <main class="container">
       <div class="searchBar opacity-20">
         <input list="cities" type="search" name="search" id="search" placeholder="Search City...">
         <span class="focus-border"></span>
         <datalist id="cities"></datalist>
       </div>
-  
+      <article id="location-denied" class="opacity-20 hidden">
+        <div>
+
+          Location permission denied on site. This could be due to location
+          permission is not given or location not enabled on your device.
+        </div>
+      </article>
       <article id="current-forecast" class="opacity-20">
         <h1 class="city">--</h1>
         <p class="temp">--</p>
@@ -44,7 +52,7 @@
             <p class="temp-low">--</p>
             <p class="temp-high">--</p>
           </article>
-  
+
         </section>
       </article>
       <article id="feels-like" class="opacity-20">
@@ -57,8 +65,10 @@
       </article>
       <canvas id="canvas"></canvas>
     </main>
-    
+
   </div>
   <script src="./script.js" defer type='module'></script>
+  <script src="./locationCaching.js" defer type='module'></script>
 </body>
+
 </html>

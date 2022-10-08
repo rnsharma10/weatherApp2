@@ -1,8 +1,11 @@
+import { addCacheItem, getCachedItem, isCached } from "./locationCaching.js";
+
 const API_KEY = "481a7c4ab04bc830b729294a0471613e";
 
 let selectedCityText;
 let selectedCity;
 let backgroundImageUrl = "";
+let changedTooFast = false;
 
 const getCurrentWeatherData = async ({ lat, lon, name: city }) => {
   const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
@@ -10,8 +13,8 @@ const getCurrentWeatherData = async ({ lat, lon, name: city }) => {
   return response.json();
 };
 
-const getHourlyForecast = async ({ name: city }) => {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&limit=5&appid=${API_KEY}&units=metric`;
+const getHourlyForecast = async ({ coord: { lon, lat } }) => {
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`;
   const response = await fetch(url);
   const data = await response.json();
   return data.list.map((forecast) => {
@@ -67,7 +70,12 @@ const loadForecastUsingGeolocation = () => {
       selectedCity = { lat, lon };
       loadData();
     },
-    (error) => console.log(error)
+    (error) => {
+      console.log(error);
+      setTimeout(() => {
+        document.getElementById("location-denied").classList.remove("hidden");
+      }, 200);
+    }
   );
 };
 
@@ -96,6 +104,7 @@ const loadCurrentForecast = ({
   onImageLoadListener(tempImageTag);
   backgroundImageUrl = `./appImages/${icon}.jpg`;
   tempImageTag.src = backgroundImageUrl;
+  document.getElementById("location-denied").classList.add("hidden");
 
   // document.querySelector(
   //   "#background"
@@ -161,23 +170,27 @@ const onSearchChange = async (event) => {
     selectedCityText = "";
     document.querySelector(".focus-border").style.backgroundColor = "white";
   }
+  await showCityList(value);
+};
 
+const showCityList = async (value) => {
   if (value && selectedCityText != value) {
     const listOfCities = await getCitiesUsingGeolocation(value);
-
     let options = ``;
 
     if (!listOfCities.length) {
-      document.querySelector(".focus-border").style.backgroundColor = "red";
+      document.querySelector(".focus-border").style.backgroundColor =
+        "var(--color-error)";
     } else {
       document.querySelector(".focus-border").style.backgroundColor = "white";
       for (let { name, state, country, lat, lon } of listOfCities) {
+        const optionValue = `${name}, ${state ? state + ", " : ""}${country}`;
         options += `
         <option data-city-details='${JSON.stringify({
           lat,
           lon,
           name,
-        })}' value="${name}, ${state}, ${country}">
+        })}' value="${optionValue}">
         `;
       }
     }
@@ -188,23 +201,44 @@ const onSearchChange = async (event) => {
 
 const debouncedSearch = debounce((event) => onSearchChange(event));
 
-const handleCitySelection = (event) => {
+const handleCitySelection = async (event) => {
   selectedCityText = event.target.value;
-
   let options = document.querySelectorAll("#cities > option");
-  if (options?.length) {
+  if (selectedCityText && options.length) {
     let selectedOption = Array.from(options).find(
       (opt) => opt.value === selectedCityText
     );
-    selectedCity = JSON.parse(selectedOption.getAttribute("data-city-details"));
-    loadData();
+    if (selectedOption) {
+      selectedCity = JSON.parse(
+        selectedOption.getAttribute("data-city-details")
+      );
+      document.querySelector("#search").blur();
+      loadData();
+    } else {
+      document.querySelector(".focus-border").style.backgroundColor =
+        "var(--color-error)";
+    }
   }
 };
 
 const loadData = async () => {
-  const currentWeather = await getCurrentWeatherData(selectedCity);
-  const hourlyForecast = await getHourlyForecast(currentWeather);
-  const fiveDayForecast = await getFiveDayForecast(hourlyForecast);
+  let { currentWeather, hourlyForecast, fiveDayForecast } = {};
+  const cachedWeatherData = await getCachedItem(
+    `${selectedCity.lat}-${selectedCity.lon}`
+  );
+  if (cachedWeatherData) {
+    ({ currentWeather, hourlyForecast, fiveDayForecast } = cachedWeatherData);
+  } else {
+    currentWeather = await getCurrentWeatherData(selectedCity);
+    // console.log(currentWeather);
+    hourlyForecast = await getHourlyForecast(currentWeather);
+    fiveDayForecast = await getFiveDayForecast(hourlyForecast);
+    addCacheItem(`${selectedCity.lat}-${selectedCity.lon}`, {
+      currentWeather,
+      hourlyForecast,
+      fiveDayForecast,
+    });
+  }
   loadCurrentForecast(currentWeather);
   loadHourlyForecast(hourlyForecast);
   loadFiveDayForecast(fiveDayForecast);
@@ -235,9 +269,9 @@ function onImageLoadListener(img) {
 function getAverageRGB(imgEl) {
   var blockSize = 5, // only visit every 5 pixels
     defaultRGB = {
-      r: 0,
-      g: 0,
-      b: 0,
+      r: 162,
+      g: 129,
+      b: 250,
     }, // for non-supporting envs
     canvas = document.createElement("canvas"),
     context = canvas.getContext && canvas.getContext("2d"),

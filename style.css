@@ -17,7 +17,11 @@
   --font-xl: 4rem;
   --font-semibold: 600;
   --color-grey : #e2e2e2;
+  --color-grey-2: #cccccc;
+  --color-error: #CC3636;
+  --color-success: #38E54D;
   --font-color: #fff;
+  --bg-color-1:#D8EFF0;
 }
 
 :focus{outline: none;}
@@ -43,15 +47,19 @@ body {
   margin: 0;
   font-family: Arial, Helvetica, sans-serif;
   color: var(--font-color);
+  background-color: var(--bg-color-1);
 }
 
 .opacity-20{
   background-color: rgba(0,0,0,.2);
+  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+  transition: box-shadow .2s ease;
 }
 
-.opacity-20-white{
-  background-color: rgba(0255,255,255,.2);
+.opacity-20:hover{
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
+
 
 .mainContainer{
   max-width: 800px;
@@ -83,6 +91,7 @@ body {
   grid-template-columns: repeat(2, 1fr);
   grid-template-areas:
     "search search"
+    "errorMessage errorMessage"
     "underlinedInput underlinedInput"
     "current current"
     "hourly hourly"
@@ -119,7 +128,7 @@ body {
   padding: var(--spacing-medium); 
   color: var(--font-color);
   background-color: transparent;
-  border-bottom: 2px solid #ccc;
+  border-bottom: 2px solid var(--color-grey-2);
   border-radius: var(--spacing-small) var(--spacing-small) 0 0 ;
 }
 
@@ -127,6 +136,7 @@ body {
   appearance: none;
   height: var(--font-regular);
   width: var(--font-regular);
+  cursor: pointer;
   background-image: url("./appImages/clear.svg");
   background-size: var(--font-regular);
   filter:grayscale(0)
@@ -149,11 +159,32 @@ body {
 }
 #search:focus ~ .focus-border {
   width: 100%;
-  transition: 0.3s;
+  /* transition: 0.3s; */
 }
 
 #search::-webkit-calendar-picker-indicator {
   display: none !important;
+}
+
+.container  #location-denied{
+  grid-area: errorMessage;
+  margin: var(--spacing-small);
+  color: var(--color-error);
+}
+
+#location-denied{
+  max-height: 100%;
+  display: block;
+  overflow: hidden;
+  transition: all 1s ease-out;
+}
+
+.hidden{
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  overflow: hidden;
+  transition: all .5s ease-in;
 }
 
 /* style related to current weather */
@@ -161,7 +192,6 @@ body {
 #current-forecast {
   grid-area: current;
   text-align: center;
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 }
 
 #current-forecast .temp {
@@ -189,7 +219,6 @@ body {
 #hourly-forecast {
   grid-area: hourly;
   text-align: center;
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 }
 
 #hourly-forecast .hourly-container {
@@ -217,7 +246,6 @@ body {
 #five-day-forecast {
   grid-area: fiveday;
   text-align: center;
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 
 }
 
@@ -251,7 +279,6 @@ body {
 #feels-like,
 #humidity {
   font-weight: var(--font-semibold);
-  box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
 }
 
 #feels-like {
@@ -269,6 +296,7 @@ body {
     grid-template-columns: repeat(4, 1fr);
     grid-template-areas:
       "search search search search"
+      "errorMessage errorMessage errorMessage errorMessage"
       "underlinedInput underlinedInput underlinedInput underlinedInput"
       "current current current current"
       "hourly hourly fiveday fiveday"
