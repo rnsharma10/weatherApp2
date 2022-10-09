@@ -3,13 +3,13 @@
 
 Weather app made using Openweather API.
 
-## [Open App](https://rns-dnweatherapp.netlify.app/)
+## [Open App](https://rns-dnweatherapp.netlify.app/){:target="_blank"}
 
 ## Tech Stack
 
 **Client:** HTML, CSS, JS
 
-**External Api**: [Openweather Api](https://openweathermap.org/api/)
+**External Api**: [Openweather Api](https://openweathermap.org/api/){:target="_blank"}
 
 **Server/Deployment Service:** Netlify
 
