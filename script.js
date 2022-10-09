@@ -69,8 +69,7 @@ const getCitiesUsingGeolocation = async function (searchText) {
 const formatTemperature = (temp) => `${temp?.toFixed(1)}°`;
 
 // CREATE ICON URL
-const createIconUrl = (icon) =>
-  `http://openweathermap.org/img/wn/${icon}@2x.png`;
+const createIconUrl = (icon) => `./appImages/icons/${icon}.png`;
 
 // USE CURRENT LOCATION OF DEVICE AND SHOW WEATHER DATA ELSE SHOW ERROR
 const loadForecastUsingGeolocation = () => {
@@ -106,6 +105,7 @@ const loadCurrentForecast = ({
   currentForecastElement
     .querySelector(".icon")
     .setAttribute("src", createIconUrl(icon));
+  currentForecastElement.querySelector(".icon").classList.add("brighten-image");
 
   currentForecastElement.querySelector(".description").textContent =
     description;
@@ -134,7 +134,7 @@ const loadHourlyForecast = (hourlyForecast) => {
     innerHTMLString += `<article class="h-block">
       <div>
         <h3 class="time">${timeFormatter.format(new Date(dt_txt))}</h3>
-        <img class="icon" src="${createIconUrl(icon)}">
+        <img class="icon brighten-image" src="${createIconUrl(icon)}">
         <p class="hourly-temp">${formatTemperature(temp)}</p>
       </div>
       </article>
@@ -147,10 +147,10 @@ const loadFiveDayForecast = (fiveDayForecast) => {
   // console.log(fiveDayForecast);
   const fiveDayContainer = document.querySelector(".five-day-container");
   let innerHTMLString = ``;
-  for (let { temp_min, temp_max, day, icon } of fiveDayForecast) {
+  for (let { temp_min, temp_max, day, icon } of fiveDayForecast.slice(0, -1)) {
     innerHTMLString += `<article class="day-wise-forecast">
         <h3>${day}</h3>
-        <img class="icon" src="${createIconUrl(icon)}">
+        <img class="icon brighten-image" src="${createIconUrl(icon)}">
         <p class="temp-low">${formatTemperature(temp_min)}</p>
         <p class="temp-high">${formatTemperature(temp_max)}</p>
       </article>

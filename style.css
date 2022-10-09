@@ -63,6 +63,11 @@ body {
   box-shadow: rgba(240, 240, 240, 0.14) 0px 3px 8px;
 }
 
+.brighten-image{
+  filter: brightness(0) invert(1);
+
+}
+
 
 .mainContainer{
   max-width: 800px;
@@ -229,9 +234,10 @@ body {
 }
 
 #current-forecast .icon {
-  width: 150px;
-  height: 150px;
+  width: 120px;
+  height: 120px;
   margin: 0 auto;
+  padding: var(--spacing-medium);
 }
 
 #current-forecast .description {
@@ -256,9 +262,9 @@ body {
 
 #hourly-forecast .hourly-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
   grid-auto-flow: column;
-  grid-auto-columns: minmax(100px, 1fr);
+  grid-auto-columns: minmax(80px, 1fr);
   overflow-x: auto;
   margin: auto;
   grid-gap: var(--spacing-medium);
@@ -271,7 +277,7 @@ body {
   content: "";
   display: inline-block;
   margin: auto 0;
-  height: 80%;
+  height: 70%;
   border-left: 2px solid var(--color-grey);
   opacity: 50%;
 }
@@ -284,9 +290,10 @@ body {
 }
 
 #hourly-forecast .hourly-container .icon {
-  height: 100px;
-  width: 100px;
+  height: 80px;
+  width: 80px;
   object-fit: contain;
+  padding: var(--spacing-medium);
 }
 #hourly-forecast .hourly-container .hourly-temp {
   font-size: var(--font-regular);
@@ -319,6 +326,7 @@ body {
   grid-template: auto / repeat(4, 1fr);
   gap: var(--spacing-regular);
   place-items: center;
+  padding: var(--spacing-medium);
 }
 
 .five-day-container .day-wise-forecast .temp-low,
@@ -332,8 +340,9 @@ body {
 }
 
 .five-day-container .day-wise-forecast .icon {
-  width: 75px;
-  height: 75px;
+  width: 60px;
+  height: 60px;
+  padding: var(--spacing-medium);
 }
 
 #feels-like,
@@ -396,9 +405,10 @@ body {
 
   #current-forecast .icon {
     grid-area: currentWeatherIcon;
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     margin: 0 auto;
+    padding: var(--spacing-regular);
   }
 
   #current-forecast .description {
