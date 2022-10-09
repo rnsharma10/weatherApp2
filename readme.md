@@ -29,10 +29,10 @@ Cache data is automatically deleted every 12 minutes.
 
 
 ## App Images
-- ### On Mobile
+- ### **On Mobile**
 
 | ![SS4](https://raw.githubusercontent.com/rnsharma10/weatherApp2/main/appImages/demo/mobile1.png) | ![SS5](https://raw.githubusercontent.com/rnsharma10/weatherApp2/main/appImages/demo/mobile2.png) | ![SS6](https://raw.githubusercontent.com/rnsharma10/weatherApp2/main/appImages/demo/mobile3.png) |
 | - | - | - |
-- ### On Desktop
-| ![SS1](https://raw.githubusercontent.com/rnsharma10/weatherApp2/main/appImages/demo/desktop1.png?token=GHSAT0AAAAAABYRT6D4PSG4TBPQ4IOZOG2KY2DCWCQ) | ![SS2](https://raw.githubusercontent.com/rnsharma10/weatherApp2/main/appImages/demo/desktop2.png?token=GHSAT0AAAAAABYRT6D4MSVFL5XPD6VV4UXAY2DCWSA) | ![SS3](https://raw.githubusercontent.com/rnsharma10/weatherApp2/main/appImages/demo/desktop3.png?token=GHSAT0AAAAAABYRT6D4E7PWU7W5OVCD5BXUY2DCW2A) |
+- ### **On Desktop**
+| ![SS1](https://raw.githubusercontent.com/rnsharma10/weatherApp2/main/appImages/demo/desktop1.png) | ![SS2](https://raw.githubusercontent.com/rnsharma10/weatherApp2/main/appImages/demo/desktop2.png) | ![SS3](https://raw.githubusercontent.com/rnsharma10/weatherApp2/main/appImages/demo/desktop3.png) |
 | - | - | - |
